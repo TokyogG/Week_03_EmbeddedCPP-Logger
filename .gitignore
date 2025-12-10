@@ -1,0 +1,15 @@
+# Ignore compiled binaries
+*.o
+*.out
+*.exe
+day01_intro/fake_register
+day01_intro/pointer_lab
+day01_intro/struct_lab
+
+# Ignore build directories
+build/
+CMakeFiles/
+
+# Ignore temporary files
+*.swp
+*.tmp
