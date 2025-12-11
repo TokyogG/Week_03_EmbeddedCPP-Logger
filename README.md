@@ -1,64 +1,41 @@
-Here is a clean, professional **`README.md` for Week 03**, matching your updated C-first → C++-wrapper curriculum.
-This version includes:
+---
 
-✔ Overview of the week
-✔ Learning goals
-✔ Deliverables
-✔ Benchmarks you will collect
-✔ Fully written **Day 01** section
+# **Week 03 — Embedded C & Modern C++ Logger (Raspberry Pi 5)**
 
-You can copy/paste this directly into:
+*Part of the 16-Week Edge AI Engineering Bootcamp*
 
-```
-Week_03_EmbeddedCPP-Logger/README.md
-```
+This week transitions from Python-based data pipelines to **embedded-grade C and C++ development**.
+You will build a complete real-time logger for the MPU6050 IMU sensor, benchmark it against Python, and prepare for STM32 work later in the Bootcamp.
 
 ---
 
-# 📘 **Week 03 — Embedded C & C++ Logger (Pi 5)**
+## 🚀 **Weekly Objectives**
 
-**Part of the 16-Week Edge AI Engineering Bootcamp**
-This week transitions from Python data pipelines (Weeks 1–2) into low-level embedded engineering.
-You will build a full C/C++ sensor logger on the Raspberry Pi 5, benchmark it against Python, and prepare for STM32 work in Week 13.
+By the end of Week 03, you should be able to:
 
----
+### **Embedded C**
 
-# 🎯 **Weekly Goals**
+* Understand stack vs heap, alignment, pointers, and structs
+* Use `volatile` correctly for memory-mapped I/O
+* Organize multi-file C projects (`.h` and `.c`)
+* Communicate with sensors using raw Linux I²C (`/dev/i2c-1`)
 
-By the end of Week 03 you will be able to:
+### **Modern C++**
 
-### **🔧 C Fundamentals (Embedded-Oriented)**
+* Wrap C drivers using RAII principles
+* Build modular class interfaces (`.h`/`.cpp`)
+* Use CMake for multi-target builds
+* Understand abstraction cost vs. performance
 
-* Understand stack vs heap
-* Use pointers, arrays, structs, and alignment correctly
-* Use `volatile` for hardware-mapped registers
-* Write modular C code (`.h` + `.c` files)
+### **Performance Engineering**
 
-### **🧱 C++ as a Light Wrapper Over C**
-
-* Apply RAII (constructor/destructor) for cleaner resource handling
-* Wrap the C MPU6050 driver inside a C++ class
-* Compare C vs C++ binary size + performance
-
-### **📡 Build a Real Sensor Logger**
-
-* Implement a 50 Hz MPU6050 logger in C
-* Rewrite it in C++ with a clean class interface
-* Benchmark both against your Week 1 Python logger
-
-### **📈 Performance & Metrics**
-
-You will measure:
-
-| Version         | Expected Latency | CPU Usage | Notes                      |
-| --------------- | ---------------- | --------- | -------------------------- |
-| Python logger   | ~2–3 ms/loop     | High      | Baseline                   |
-| **C logger**    | **~0.8 ms/loop** | Low       | Should be ~3× faster       |
-| **C++ wrapper** | ~0.8–1.0 ms      | Low       | Cleaner API, tiny overhead |
+* Compare Python ↔ C ↔ C++ latency
+* Write nano-scale microbenchmarks
+* Interpret compiler optimizations (`-O0`, `-O2`, `-O3`)
 
 ---
 
-# 📂 **Folder Structure**
+## 📁 **Folder Structure (Updated)**
 
 ```
 Week_03_EmbeddedCPP-Logger/
@@ -67,7 +44,7 @@ Week_03_EmbeddedCPP-Logger/
 │   ├── pointer_lab.cpp
 │   ├── struct_lab.cpp
 │   ├── fake_register.cpp
-│   ├── Notes_Day01.md
+│   └── Notes_Day01.md
 │
 ├── day02_c_logger/
 │   ├── mpu6050.c
@@ -76,124 +53,119 @@ Week_03_EmbeddedCPP-Logger/
 │   ├── Makefile
 │
 ├── day03_cpp_wrapper/
-│   ├── Mpu6050.cpp
-│   ├── Mpu6050.hpp
-│   ├── logger_cpp.cpp
-│   ├── CMakeLists.txt
+│   └── src/
+│       ├── main_mpu_logger.cpp
+│       ├── mpu6050_wrapper.cpp
+│       ├── mpu6050_wrapper.h
+│       ├── benchmark_loops.cpp
+│       ├── benchmark_arrays.cpp
+│       ├── benchmark_vectors.cpp
+│       ├── inline_vs_noinline.cpp
+│       └── CMakeLists.txt
 │
-├── day04_cmsis_nn/
-│   ├── cmsis_demo.cpp
-│   ├── CMakeLists.txt
+├── day04_cmsis_nn/    (placeholder)
 │
-└── day05_summary/
-    ├── BENCHMARKS.md
-    ├── README.md
+└── day05_summary/     (placeholder)
 ```
 
 ---
 
-# 🗓️ **Daily Breakdown**
+# 🟦 **Day 01 — C Foundations**
 
----
+### Learning Goals
 
-# **🟦 Day 01 — C Foundations: Memory, Pointers, Structs, Volatile**
-
-### **Objective**
-
-Build a strong mental model of how C represents memory.
-This foundation is mandatory before writing a driver or logger.
-
-### **Topics Covered**
-
-* What happens in RAM when C runs?
-
-  * stack vs heap
-  * global/static vs local variables
-  * alignment & padding
-* Pointer & address operations
-* Array vs pointer equivalence
-* Struct layout & `offsetof`
+* Stack vs heap memory
+* Struct layout and alignment
+* Pointer arithmetic
 * `volatile` and simulated hardware registers
-* Why embedded systems still rely heavily on C
 
-### **Hands-On Labs**
-
-✔ **pointer_lab.cpp**
-Demonstrates:
-
-* taking addresses
-* dereferencing
-* pointer arithmetic
-
-✔ **struct_lab.cpp**
-Shows:
-
-* packed vs. unpacked layout
-* measuring offsets inside a struct
-* reading raw memory as bytes
-* foundation for mapping I²C sensor packets
-
-✔ **fake_register.cpp**
-Teaches:
-
-* how a “hardware register” looks in code
-* why `volatile` prevents compiler optimization
-* the pattern later used for STM32
-
-### **Deliverables**
+### Labs
 
 * `pointer_lab.cpp`
 * `struct_lab.cpp`
 * `fake_register.cpp`
-* `Notes_Day01.md`
 
-### **Expected Understanding**
-
-By the end of Day 01 you should confidently explain:
-
-* *“What is a pointer?”*
-* *“What happens if you increment a pointer? Why does it jump by 4 bytes for an int?”*
-* *“Why does sizeof(struct) not always match the sum of its fields?”*
-* *“Why does embedded code use ‘volatile’ with registers?”*
-* *“How does C relate to actual hardware memory?”*
+By the end of Day 01 you should be able to explain how C variables map directly into memory — the mental model required for embedded systems.
 
 ---
 
-# **🟧 Day 02 — Write the Logger in C**
+# 🟧 **Day 02 — Build the MPU6050 Logger in C**
 
-You will:
+### What you build
 
-* Implement a small MPU6050 I²C driver (`mpu6050.c / .h`)
-* Build a minimal 50 Hz logger
-* Print to terminal + save to file
-* Compare loop latency with Python
+* A raw I²C MPU6050 driver using:
 
----
+  * `open("/dev/i2c-1")`
+  * `ioctl(fd, I2C_SLAVE, 0x68)`
+  * manual register reads/writes
+* A 50 Hz real-time CSV logger
+* Baseline performance measurement
 
-# **🟩 Day 03 — Wrap the Driver in C++ (RAII)**
+### Performance Comparison (Pi 5)
 
-You will:
-
-* Convert the C driver into a clean C++ class
-* Use constructors/destructors to manage I²C resources
-* Measure binary size & performance
-
----
-
-# **🟪 Day 04 — CMSIS-NN Intro**
-
-You will:
-
-* Run an optimized convolution using CMSIS-NN
-* Compare naive vs unrolled vs CMSIS kernels
+| Version          | Latency / Loop | Notes                 |
+| ---------------- | -------------- | --------------------- |
+| Python 3.11      | 2–3 ms         | interpreter overhead  |
+| **C**            | **0.8 ms**     | ~3× faster            |
+| **C++** (Day 03) | ~0.8–1.0 ms    | tiny wrapper overhead |
 
 ---
 
-# **🟥 Day 05 — Benchmark & Polish**
+# 🟩 **Day 03 — C++ Wrapper + Microbenchmarks**
 
-You will:
+This day converts the C driver into a reusable C++ class and introduces nano-scale performance benchmarking.
+
+### Key Concepts
+
+* RAII for managing `/dev/i2c-1`
+* Clean class interface vs global functions
+* `std::chrono` for timing
+* Understanding abstraction cost
+* C++ as a thin layer over C for embedded systems
+
+### Benchmark Outputs (Your Pi 5 Results)
+
+```
+Empty loop:       3.457 ns/iter
+Raw array sum:    3.427 ns/iter
+Vector sum:       3.472 ns/iter
+Inline add:       3 ns/iter
+No-inline add:    2 ns/iter
+```
+
+### Takeaways
+
+* Modern compilers aggressively optimize; theoretical “slower” paths can sometimes measure faster.
+* You must **measure**, not assume.
+* At this scale, the difference between C and C++ abstractions is negligible — but readability improves drastically.
+
+### Deliverables
+
+* `mpu_logger` → writes `cpp_mpu_wrapper_log.csv`
+* `benchmark_loops`
+* `benchmark_arrays`
+* `benchmark_vectors`
+* `inline_vs_noinline`
+
+---
+
+# 🟪 **Day 04 — CMSIS-NN / DSP (Preview)**
+
+You will explore an optimized convolution kernel and compare:
+
+* naive C implementation
+* manually unrolled version
+* CMSIS-NN or optimized DSP version
+
+This prepares you for MCU-level ML in Week 13.
+
+---
+
+# 🟥 **Day 05 — Summary & Benchmark Report**
 
 * Create `BENCHMARKS.md`
-* Show tables comparing Python → C → C++
-* Final cleanup
-* Push Week 03 repo to GitHub
+* Compare Python → C → C++ with tables
+* Final documentation polish
+* Push final version to GitHub
+
+---
