@@ -13,3 +13,24 @@ CMakeFiles/
 # Ignore temporary files
 *.swp
 *.tmp
+
+# Build outputs / native modules
+*.so
+*.a
+*.dll
+*.dylib
+
+# Python cache
+__pycache__/
+*.pyc
+
+# CMake / builds (all levels)
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Never commit nested git dirs inside vendored deps
+**/third_party/**/.git/
