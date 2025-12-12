@@ -159,6 +159,25 @@ You will explore an optimized convolution kernel and compare:
 
 This prepares you for MCU-level ML in Week 13.
 
+## Day 04 – CMSIS-NN Convolution
+
+**Setup**
+- int8 3×3 convolution (HWC)
+- Cin = 8, Cout = 8
+- Proper per-channel requantization (Q31 multiplier)
+
+**Results**
+| Kernel | Time / iter | Speedup |
+|------|-------------|---------|
+| Naive C++ | ~794 µs | 1.0× |
+| CMSIS-NN (arm_convolve_wrapper_s8) | ~424 µs | ~1.87× |
+
+**Notes**
+- CMSIS-NN always applies requantization; identity scaling requires Q31 multiplier (`0x7fffffff`)
+- After aligning quant pipelines, CMSIS and naive outputs match exactly
+- Even on Cortex-A (Pi), CMSIS-NN delivers meaningful speedups
+
+
 ---
 
 # 🟥 **Day 05 — Summary & Benchmark Report**
